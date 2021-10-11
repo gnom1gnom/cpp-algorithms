@@ -1,8 +1,11 @@
 #include <cstdio>
+#include <iostream>
+
+using namespace std;
 
 /**
  * @brief Iterates over array and print elements
- * 
+ *
  */
 void iteratArray()
 {
@@ -14,15 +17,76 @@ void iteratArray()
     }
 
     // or
-    long i =0;
-    for(int val : arr)
+    long i = 0;
+    for (int val : arr)
     {
-       printf("The element %d is %d.\n", ++i, val); 
+        printf("The element %d is %d.\n", ++i, val);
     }
-    
+}
+
+enum class Race
+{
+    Dinan,
+    Teklan,
+    Ivyn,
+    Moiran,
+    Camite,
+    Julian,
+    Aidan
+};
+
+string raceToString(Race race)
+{
+    string result;
+    switch (race)
+    {
+    case Race::Dinan:
+    {
+        result = "You work hard.";
+    }
+    break;
+    case Race::Teklan:
+    {
+        result = "You are very strong.";
+    }
+    break;
+    case Race::Ivyn:
+    {
+        result = "You are a great leader.";
+    }
+    break;
+    case Race::Moiran:
+    {
+        result = "My, how versatile you are!";
+    }
+    break;
+    case Race::Camite:
+    {
+        result = "You're incredibly helpful.";
+    }
+    break;
+    case Race::Julian:
+    {
+        result = "Anything you want!";
+    }
+    break;
+    case Race::Aidan:
+    {
+        result = "What an enigma.";
+    }
+    break;
+    default:
+    {
+        result = "Error: unknown race!";
+    }
+    }
+    return result;
 }
 
 int main()
 {
     iteratArray();
+    string raceResult = raceToString(Race::Camite);
+    printf("The result is %s\n" , raceResult.c_str());
+    cout << raceResult << "\n";
 }
