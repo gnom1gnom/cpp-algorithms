@@ -14,6 +14,11 @@ struct Leaf
         this->next = nullptr;
     }
 
+    ~Leaf()
+    {
+        cout << this->name << " burning\n";
+    }
+
     void add(string name)
     {
         Leaf *temp = this;
@@ -24,13 +29,13 @@ struct Leaf
         temp->next = new Leaf(name);
     }
 
-    void destroy()
-    {
-        Leaf *temp = this;
-        _destroy(temp);
-    }
-
-    void _destroy(Leaf *&leaf)
+    /**
+     * @brief If a pointer is passed to a function as a parameter and tried to be modified then the changes made to the PONITER does not reflects back outside that function. 
+     * This is because only a copy of the pointer is passed to the function.
+     * 
+     * @param leaf 
+     */
+    void destroy(Leaf *&leaf)
     {
         while (leaf)
         {
@@ -65,7 +70,7 @@ int main(int argc, char const *argv[])
     }
 
     cout << "Buring down the tree \n";
-    tree->destroy();
+    tree->destroy(tree);
 
     return 0;
 }
