@@ -9,6 +9,12 @@ using namespace std;
  */
 void iteratArray()
 {
+
+    int array_1[]{1, 2, 3};  // Array of length 3; 1, 2, 3
+    int array_2[5]{};        // Array of length 5; 0, 0, 0, 0, 0
+    int array_3[5]{1, 2, 3}; // Array of length 5; 1, 2, 3, 0, 0
+    int array_4[5];          // Array of length 5; uninitialized values
+
     int arr[] = {11, 22, 33, 44};
 
     for (long i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
@@ -87,6 +93,6 @@ int main()
 {
     iteratArray();
     string raceResult = raceToString(Race::Camite);
-    printf("The result is %s\n" , raceResult.c_str());
+    printf("The result is %s\n", raceResult.c_str());
     cout << raceResult << "\n";
 }
