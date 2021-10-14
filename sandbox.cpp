@@ -1,5 +1,11 @@
 #include <cstdio>
 #include <iostream>
+#include <iomanip>
+#include <stdexcept>
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <limits>
 
 using namespace std;
 
@@ -17,13 +23,13 @@ void iteratArray()
 
     int arr[] = {11, 22, 33, 44};
 
-    for (long i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+    for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
     {
         printf("The %d element is %d.\n", i, arr[i]);
     }
 
     // or
-    long i = 0;
+    int i = 0;
     for (int val : arr)
     {
         printf("The element %d is %d.\n", ++i, val);
@@ -39,6 +45,72 @@ enum class Race
     Camite,
     Julian,
     Aidan
+};
+
+void petruchio(char *shrew)
+{
+    char lower[] = "abc?e";
+    char upper[] = "ABC?E";
+    char *upper_ptr = upper; // Equivalent: &upper[0]
+
+    lower[3] = 'd';     // lower now contains a b c d e \0
+    upper_ptr[3] = 'D'; // upper now contains A B C D E \0
+
+    char letter_d = lower[3];     // letter_d equals 'd'
+    char letter_D = upper_ptr[3]; // letter_D equals 'D'
+
+    printf("lower: %s\nupper: %s\n", lower, upper);
+    shrew[0] = 'K';
+    printf("Fear not, sweet wench, they shall not touch thee, %s.\n", shrew);
+
+    // Compiler error! The shrew cannot be tamed.
+}
+struct ClockOfTheLongNow
+{
+    ClockOfTheLongNow(int year_in)
+    {
+        if (!set_year(year_in))
+        {
+            year = 2019;
+        }
+    }
+    ClockOfTheLongNow()
+    {
+        year = 2019;
+    }
+    void add_year()
+    {
+        year++;
+    }
+    bool set_year(int new_year)
+    {
+        if (new_year < 2019)
+            return false;
+        year = new_year;
+        return true;
+    }
+    int get_year() const
+    {
+        return year;
+    }
+
+private:
+    int year;
+};
+
+struct Avout
+{
+    const char *name;
+    ClockOfTheLongNow apert;
+
+    Avout(const char *name, long year_of_apert) : name{name}, apert{year_of_apert}
+    {
+    }
+
+    void announce() const
+    {
+        printf("My name is %s and my next apert is %d.\n", name, apert.get_year());
+    }
 };
 
 string raceToString(Race race)
@@ -95,4 +167,6 @@ int main()
     string raceResult = raceToString(Race::Camite);
     printf("The result is %s\n", raceResult.c_str());
     cout << raceResult << "\n";
+    char shrew[]{"Dupa"};
+    petruchio(shrew);
 }
