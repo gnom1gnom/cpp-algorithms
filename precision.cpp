@@ -25,6 +25,15 @@ struct Incrementer
     }
 };
 
+void printWithPrecision(auto input)
+{
+    std::cout << "default precision (6): " << std::setprecision(6) << input << std::endl
+              << "std::setprecision(10): " << std::setprecision(10) << input << std::endl
+              << "max precision:         "
+              << std::setprecision(std::numeric_limits<long double>::digits10 + 1)
+              << input << std::endl;
+}
+
 int main(int argc, char const *argv[])
 {
     // int x = 10;
@@ -41,16 +50,13 @@ int main(int argc, char const *argv[])
     incr2.print();
 
     const long double pi = std::acos(-1.L);
-    std::cout << "default precision (6): " << pi << '\n'
-              << "std::setprecision(10): " << std::setprecision(10) << pi << '\n'
-              << "max precision:         "
-              << std::setprecision(std::numeric_limits<long double>::digits10 + 1)
-              << pi << '\n';
+    printWithPrecision(pi);
 
-    double x = 2.7182818284590452353602874713527L;
-    std::cout << std::setprecision(50) << x << std::endl;
-    float y = x;
-    uint8_t z{x};
+    int y = pi;
+    double z{pi};
+
+    printWithPrecision(y);
+    printWithPrecision(z);
 
     return 0;
 }
