@@ -31,11 +31,14 @@ DoubleListNode *insert(DoubleListNode *&after, int value)
     return after->next;
 }
 
-void remove(DoubleListNode *&node)
+DoubleListNode *remove(DoubleListNode *&node)
 {
-    node->pre->next = node->next;
-    node->next->pre = node->pre;
+    if (node->pre)
+        node->pre->next = node->next;
+    if (node->next)
+        node->next->pre = node->pre;
     delete (node);
+    node = nullptr;
 }
 
 void deleteList(DoubleListNode *&head)
@@ -83,18 +86,25 @@ int main(int argc, char const *argv[])
 
     print(head);
 
-    deleteList(head);
+    DoubleListNode *current = head;
+
+    while (current && current->next)
+    {
+        current = current->next;
+        DoubleListNode *deleteMe = current;
+
+        if (current->next)
+            current = current->next;
+
+        if (deleteMe)
+            remove(deleteMe);
+    }
 
     print(head);
 
-    // DoubleListNode *current = head;
-    // for (size_t i = 0; i < 10; i++)
-    // {
-    //     if (i % 2) {
+    deleteList(head);
 
-    //     }
-    //         remove(current);
-    // }
+    print(head);
 
     return 0;
 }
