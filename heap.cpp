@@ -15,7 +15,7 @@ struct Elem
 
     ~Elem()
     {
-        cout << value << " deleted" << std::endl;
+        cout << "~" << value << std::endl;
     }
 
     static Elem *add(Elem *&top, string value)
