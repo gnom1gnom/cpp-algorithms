@@ -12,44 +12,39 @@ public:
 // Function to rotate a linked list
 Node *rotate(Node *head, int k)
 {
-
-    // Base condition.
-    if (head == NULL)
-    {
+    if (!k)
         return head;
+
+    Node *iter{head};
+    // go to the end of the list and find it's lenght
+    long length;
+
+    int rotations = k;
+
+    for (length = 1; iter->next; length++)
+    {
+        iter = iter->next;
     }
 
-    int len = 1;
-    Node *temp = head;
-
-    // Calculate length of the linked list.
-    while (temp->next != NULL)
-    {
-        temp = temp->next;
-        len += 1;
-    }
-
-    k = k % len;
-
-    // Number of rotations are same as len so no change in LL.
-    if (k == len || k == 0)
-    {
+    // count the modulo rotation number
+    rotations = rotations % length;
+    if (!rotations)
         return head;
-    }
 
-    // To make a circular linked list.
-    temp->next = head;
+    cout << "List will be rotated " << rotations << " times" << std::endl;
+    // make a circuar list
+    iter->next = head;
 
-    temp = head;
-
-    for (int i = 0; i < abs(len - k - 1); i++)
+    int endIndex = length - rotations;
+    // idiemy do elementu gdzie musimy rozłączyć listę
+    for (long i = 1; i < endIndex; i++)
     {
-        temp = temp->next;
+        head = head->next;
     }
 
-    // Changing pointers.
-    head = temp->next;
-    temp->next = NULL;
+    Node *end = head;
+    head = head->next;
+    end->next = nullptr;
 
     return head;
 }
@@ -86,10 +81,10 @@ int main()
     input(&head, 2);
     input(&head, 1);
 
-    int k = 2;
-    cout << "Original linked list \n";
+    int k = 58;
+    cout << "Original linked list, to be rotated " << k << " times" << std::endl;
     printlist(head);
     head = rotate(head, k);
-    cout << "Linked list after rotation \n";
+    cout << "Linked list after rotation" << std::endl;
     printlist(head);
 }
