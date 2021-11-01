@@ -3,22 +3,42 @@
 #include <climits>
 using namespace std;
 
-void sort(vector<int> &L)
+int minComperator(int arg1, int arg2)
+{
+    if (arg1 < arg2)
+        return -1;
+    if (arg1 > arg2)
+        return 1;
+    return 0;
+}
+
+int maxComperator(int arg1, int arg2)
+{
+    if (arg1 > arg2)
+        return -1;
+    if (arg1 < arg2)
+        return 1;
+    return 0;
+}
+
+void sort(vector<int> &L, int (*comperator)(int, int))
 {
     size_t n = L.size();
-
-    double t;
-    for (int i = 0; i < n; i++)
+    int temp;
+    while (n)
     {
-        for (int j = 0; j < n - i - 1; j++)
+        for (int i = 1; i < n; i++)
         {
-            if (L[j] > L[j + 1])
+            // porównujemy sąsiadów
+            if (comperator(L[i - 1], L[i]) == 1)
             {
-                t = L[j];
-                L[j] = L[j + 1];
-                L[j + 1] = t;
+                // większy jest po lewej - zamieniamy ich kolejnościa
+                temp = L[i];
+                L[i] = L[i - 1];
+                L[i - 1] = temp;
             }
         }
+        n--;
     }
 }
 
@@ -26,7 +46,9 @@ int main()
 {
     vector<int> L = {0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15};
 
-    sort(L);
+    int (*comperator)(int, int) = maxComperator;
+
+    sort(L, comperator);
     for (int i = 0; i < L.size(); i++)
         cout << L[i] << " ";
 
