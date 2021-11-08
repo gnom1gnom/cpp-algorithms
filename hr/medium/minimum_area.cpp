@@ -8,7 +8,6 @@
  *  3. INTEGER k
  */
 
-
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -16,13 +15,39 @@ using namespace std;
 string ltrim(const string &);
 string rtrim(const string &);
 
+long minArea(vector<int> x, vector<int> y, int k)
+{
+    // szukamy lewej dolnej krawędzi
+    // szukamy prawej górnej krawedzi
+    int lowerX{INT_MAX}, lowerY{INT_MAX};
+    int upperX{INT_MIN}, upperY{INT_MIN};
 
-long minArea(vector<int> x, vector<int> y, int k) {
+    vector<pair<int, int>> vect;
+    for (int i = 0; i < x.size(); i++)
+    {
+        if (x[i] < lowerX)
+            lowerX = x[i] - 1;
+        if (x[i] > upperX)
+            upperX = x[i] + 1;
 
+        if (y[i] < lowerY)
+            lowerY = y[i] - 1;
+        if (y[i] > upperY)
+            upperY = y[i] + 1;
+
+        vect.push_back(make_pair(x[i], y[i]));
+    }
+
+    sort(vect.begin(), vect.end());
+
+    long bok = ((upperX - lowerX) > (upperY - lowerY)) ? (upperX - lowerX) : (upperY - lowerY);
+    return bok * bok;
+
+    // obszar zawężamy do k punktów
 }
 
 int main()
-{
+{ /*
     ofstream fout(getenv("OUTPUT_PATH"));
 
     string x_count_temp;
@@ -61,34 +86,37 @@ int main()
     getline(cin, k_temp);
 
     int k = stoi(ltrim(rtrim(k_temp)));
+    */
+
+    vector<int> x = {-4, 3, 1};
+    vector<int> y = {3, -1, -2};
+    int k = 2;
 
     long result = minArea(x, y, k);
 
-    fout << result << "\n";
-
-    fout.close();
+    cout << result << "\n";
 
     return 0;
 }
 
-string ltrim(const string &str) {
+string ltrim(const string &str)
+{
     string s(str);
 
     s.erase(
         s.begin(),
-        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
-    );
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))));
 
     return s;
 }
 
-string rtrim(const string &str) {
+string rtrim(const string &str)
+{
     string s(str);
 
     s.erase(
         find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
-        s.end()
-    );
+        s.end());
 
     return s;
 }
