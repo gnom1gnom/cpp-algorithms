@@ -44,8 +44,13 @@ int connectedSum(int graph_nodes, vector<int> graph_from, vector<int> graph_to)
     {
         if (visited[i] == false)
         {
-            int cnt = getConnectedComponentSize(i);
-            ans += ceil(sqrt(cnt));
+            if (v.find(i) != v.end()) // there is at least one connection from the node
+            {
+                int cnt = getConnectedComponentSize(i);
+                ans += ceil(sqrt(cnt));
+            }
+            else // this is an isolated node
+                ans++;
         }
     }
 
@@ -58,9 +63,7 @@ int main(int argc, char const *argv[])
     int graph_nodes = 10;
 
     vector<int> graph_from = {1, 1, 2, 3, 7};
-
     vector<int> graph_to = {2, 3, 4, 5, 8};
-
     cout << connectedSum(graph_nodes, graph_from, graph_to) << endl;
 
     return 0;
