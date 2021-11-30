@@ -19,6 +19,7 @@ public:
     void insert(T value)
     {
 
+        /*
         if (value <= this->value)
         {
             if (left)
@@ -33,20 +34,19 @@ public:
             else
                 right = new Node(value);
         }
+        */
 
-        /*
         Node **node;
-        
+
         if (value <= this->value)
             node = &left;
         else
             node = &right;
 
-        if (node)
+        if (*node)
             (*node)->insert(value);
         else
             (*node) = new Node(value);
-        */
     }
 };
 
@@ -107,6 +107,7 @@ main(int argc, char const *argv[])
         bts.insert(v);
 
     bts.search(10);
+    bts.search(6);
 
     return 0;
 }
