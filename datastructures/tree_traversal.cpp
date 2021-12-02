@@ -19,22 +19,25 @@ Node *newNode(int data)
     return temp;
 }
 
-/** Drukujemy on najniższego poziomu do korzenia,
- * na każdym przechodzimy od lewej do prawej
+/**
+ * Schodź (rekursywnie) na lewo do dna,
+ * a potem rekursywnie na prawo
+ * drukuj gałąź od razu, zanim odwiedzisz dzieci
  **/
-void printPostorder(struct Node *node)
+
+void printPreorder(struct Node *node)
 {
     if (node == NULL)
         return;
 
-    // first recur on left subtree
-    printPostorder(node->left);
-
-    // then recur on right subtree
-    printPostorder(node->right);
-
-    // now deal with the node
+    /* first print data of node */
     cout << node->data << " " << flush;
+
+    /* then recur on left subtree */
+    printPreorder(node->left);
+
+    /* now recur on right subtree */
+    printPreorder(node->right);
 }
 
 /** Na każdym rozgałęzienu
@@ -57,25 +60,22 @@ void printInorder(struct Node *node)
     printInorder(node->right);
 }
 
-/**
- * Schodź (rekursywnie) na lewo do dna,
- * a potem rekursywnie na prawo
- * drukuj gałąź od razu, zanim odwiedzisz dzieci
+/** Drukujemy on najniższego poziomu do korzenia,
+ * na każdym przechodzimy od lewej do prawej
  **/
-
-void printPreorder(struct Node *node)
+void printPostorder(struct Node *node)
 {
     if (node == NULL)
         return;
 
-    /* first print data of node */
+    // first recur on left subtree
+    printPostorder(node->left);
+
+    // then recur on right subtree
+    printPostorder(node->right);
+
+    // now deal with the node
     cout << node->data << " " << flush;
-
-    /* then recur on left subtree */
-    printPreorder(node->left);
-
-    /* now recur on right subtree */
-    printPreorder(node->right);
 }
 
 /* Driver program to test above functions*/
@@ -89,6 +89,7 @@ int main()
     root->right->left = newNode(6);
     root->right->right = newNode(7);
 
+    cout << "https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/\n";
     cout << "\nPreorder traversal of binary tree is \n"
          << flush;
     printPreorder(root);
