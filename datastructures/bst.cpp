@@ -63,6 +63,11 @@ public:
         root = new Node<T>(value);
     }
 
+    Node<T> *getRoot()
+    {
+        return root;
+    }
+
     void insert(int value)
     {
         if (!root)
@@ -94,6 +99,32 @@ public:
             cout << node->value << endl;
         else
             cout << "???" << endl;
+    }
+
+    vector<list<Node<T> *>> createLevelLinkedList()
+    {
+        vector<list<Node<T> *>> result;
+        result.push_back({getRoot()});
+
+        list<Node<T> *> nextLevel;
+        do
+        {
+            nextLevel.clear();
+
+            for (Node<T> *n : result[result.size() - 1])
+            {
+                if (n->left)
+                    nextLevel.push_back(n->left);
+                if (n->right)
+                    nextLevel.push_back(n->right);
+            }
+
+            if (nextLevel.size() > 0)
+                result.push_back(nextLevel);
+
+        } while (nextLevel.size() > 0);
+
+        return result;
     }
 };
 
@@ -130,8 +161,19 @@ int main(int argc, char const *argv[])
     bts.search(10);
     bts.search(6);
 
-    vector<int> min = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    vector<int> min = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     BTS<int> min_bts = minimalBST(min);
+
+    auto levels = min_bts.createLevelLinkedList();
+
+    for (auto l : levels)
+    {
+        for (auto *n : l)
+        {
+            cout << n->value << " ";
+        }
+        cout << endl;
+    }
 
     return 0;
 }
