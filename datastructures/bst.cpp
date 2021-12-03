@@ -97,7 +97,28 @@ public:
     }
 };
 
-main(int argc, char const *argv[])
+void minimalBST(BTS<int> &bts, vector<int> &arr, int left, int right)
+{
+    if (right - left >= 0)
+    {
+        // int middle = left + ceil((right - left) / 2);
+        // rezultat taki sam a arymetka prostsza
+        int middle = (right + left) / 2;
+        bts.insert(arr[middle]);
+
+        minimalBST(bts, arr, left, middle - 1);
+        minimalBST(bts, arr, middle + 1, right);
+    }
+}
+
+BTS<int> minimalBST(vector<int> arr)
+{
+    BTS<int> bts;
+    minimalBST(bts, arr, 0, arr.size() - 1);
+    return bts;
+}
+
+int main(int argc, char const *argv[])
 {
 
     vector<int> val = {5, 4, 8, 6, 2, 3, 9};
@@ -108,6 +129,9 @@ main(int argc, char const *argv[])
 
     bts.search(10);
     bts.search(6);
+
+    vector<int> min = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    BTS<int> min_bts = minimalBST(min);
 
     return 0;
 }
