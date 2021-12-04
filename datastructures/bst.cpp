@@ -1,4 +1,7 @@
+#define FMT_HEADER_ONLY
+
 #include <bits/stdc++.h>
+#include <fmt/core.h>
 
 using namespace std;
 
@@ -47,6 +50,36 @@ public:
             (*node)->insert(value);
         else
             (*node) = new Node(value);
+    }
+
+    static int getLength(Node<T> *node)
+    {
+        if (!node)
+            return -1;
+
+        if (!node->left && !node->right)
+            return 0;
+
+        return max(getLength(node->left), getLength(node->right)) + 1;
+    }
+
+    static pair<int, int> getLengthPair(Node<T> *node)
+    {
+        if (!node)
+            return make_pair(-1, -1);
+
+        if (!node->left && !node->right)
+            return make_pair(0, 0);
+
+        pair<int, int> lL = getLengthPair(node->left);
+        pair<int, int> rL = getLengthPair(node->right);
+
+        pair<int, int> result = make_pair(max(lL.first, lL.second) + 1, max(rL.first, rL.second) + 1);
+
+        if (abs(result.first - result.second) > 1)
+            fmt::print("{} ({},{})\n", node->value, result.first, result.second);
+
+        return result;
     }
 };
 
@@ -152,7 +185,7 @@ BTS<int> minimalBST(vector<int> arr)
 int main(int argc, char const *argv[])
 {
 
-    vector<int> val = {5, 4, 8, 6, 2, 3, 9};
+    vector<int> val = {5, 4, 8, 6, 2, 3, 9, 12, 15, 16};
     BTS<int> bts;
 
     for (int v : val)
@@ -161,12 +194,29 @@ int main(int argc, char const *argv[])
     bts.search(10);
     bts.search(6);
 
+    auto h = Node<int>::getLengthPair(bts.getRoot());
+    fmt::print("Tree height: ({},{})", h.first, h.second);
+
+    cout << "----------------------\n";
+
+    auto levels1 = bts.createLevelLinkedList();
+
+    for (auto l : levels1)
+    {
+        for (auto *n : l)
+        {
+            cout << n->value << " ";
+        }
+        cout << endl;
+    }
+
+    cout << "----------------------\n";
     vector<int> min = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     BTS<int> min_bts = minimalBST(min);
 
-    auto levels = min_bts.createLevelLinkedList();
+    auto levels2 = min_bts.createLevelLinkedList();
 
-    for (auto l : levels)
+    for (auto l : levels2)
     {
         for (auto *n : l)
         {
