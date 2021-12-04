@@ -81,6 +81,37 @@ public:
 
         return result;
     }
+
+    static pair<int, int> getMinMax(Node<T> *node)
+    {
+        if (!node)
+            return make_pair(INT_MAX, INT_MIN);
+
+        if (!node->left && !node->right)
+            return make_pair(node->value, node->value);
+
+        pair<int, int> lMM;
+        if (node->left)
+            lMM = getMinMax(node->left);
+        else
+            lMM = make_pair(node->value, node->value);
+
+        pair<int, int> rMM;
+        if (node->right)
+            rMM = getMinMax(node->right);
+        else
+            rMM = make_pair(node->value, node->value);
+
+        if (node->value < lMM.second)
+            fmt::print("{} left: ({},{})\n", node->value, lMM.first, lMM.second);
+
+        if (node->value > rMM.first)
+            fmt::print("{} right: ({},{})\n", node->value, rMM.first, rMM.second);
+
+        pair<int, int> result = make_pair(min(lMM.first, rMM.first), max(lMM.second, rMM.second));
+
+        return result;
+    }
 };
 
 template <class T>
@@ -195,7 +226,10 @@ int main(int argc, char const *argv[])
     bts.search(6);
 
     auto h = Node<int>::getLengthPair(bts.getRoot());
-    fmt::print("Tree height: ({},{})", h.first, h.second);
+    fmt::print("Tree height: ({},{})\n", h.first, h.second);
+
+    auto mm = Node<int>::getMinMax(bts.getRoot());
+    fmt::print("Root min max: ({},{})\n", mm.first, mm.second);
 
     cout << "----------------------\n";
 
@@ -224,6 +258,18 @@ int main(int argc, char const *argv[])
         }
         cout << endl;
     }
+
+    cout << "----------------------\n";
+
+    BTS<int> bad_bts{20};
+    bad_bts.insert(10);
+    bad_bts.insert(30);
+    bad_bts.getRoot()->left->insert(25);
+
+    auto bad_mm = Node<int>::getMinMax(bad_bts.getRoot());
+    fmt::print("Root min max: ({},{})\n", bad_mm.first, bad_mm.second);
+
+    cout << "----------------------\n";
 
     return 0;
 }
