@@ -19,27 +19,28 @@ enum state
     visited
 };
 
+template <class T>
 class Graph
 {
 public:
-    Graph(int root)
+    Graph(T root)
     {
         this->root = root;
     }
-    int root;
-    map<int, state> visit_state;
-    map<int, list<int>> adj;
+    T root;
+    map<T, state> visit_state;
+    map<T, list<T>> adj;
 
-    void addEdge(int v, int w)
+    void addEdge(T v, T w)
     {
         adj[v].push_back(w); // Add w to v’s list.
     }
 
     template <typename... ints>
-    void addEdge(int v, ints... ws)
+    void addEdge(T v, ints... ws)
     {
-        int args[]{ws...};
-        for (int arg : args)
+        T args[]{ws...};
+        for (T arg : args)
             adj[v].push_back(arg);
     }
 
@@ -51,100 +52,94 @@ public:
 
     // DFS traversal of the vertices
     // reachable from v
-    void DFS(int v);
-
-    void BFS(int s);
-
-    bool BFS(int s, int e);
-};
-
-void Graph::DFS(int v)
-{
-    // Mark the current node as visit_state and
-    // print it
-    visit_state[v] = visited;
-    cout << v << " ";
-
-    // Recur for all the vertices adjacent
-    // to this vertex
-
-    for (auto i = adj[v].begin(); i != adj[v].end(); ++i)
-        if (visit_state[*i] == unvisited)
-            DFS(*i);
-}
-
-void Graph::BFS(int s)
-{
-    // Create a queue for BFS
-    list<int> queue;
-
-    // Mark the current node as visit_state and enqueue it
-    visit_state[s] = visited;
-    queue.push_back(s);
-
-    while (!queue.empty())
+    void DFS(T v)
     {
-        // Dequeue a vertex from queue and print it
-        s = queue.front();
-        cout << s << " ";
-        queue.pop_front();
+        // Mark the current node as visit_state and
+        // print it
+        visit_state[v] = visited;
+        cout << v << " ";
 
-        // Get all adjacent vertices of the dequeued
-        // vertex s. If a adjacent has not been visit_state,
-        // then mark it visit_state and enqueue it
-        for (auto i = adj[s].begin(); i != adj[s].end(); ++i)
-        {
+        // Recur for all the vertices adjacent
+        // to this vertex
+
+        for (auto i = adj[v].begin(); i != adj[v].end(); ++i)
             if (visit_state[*i] == unvisited)
-            {
-                visit_state[*i] = visited;
-                queue.push_back(*i);
-            }
-        }
+                DFS(*i);
     }
-}
 
-bool Graph::BFS(int s, int e)
-{
-    if (s == e)
-        return true;
-
-    // Create a queue for BFS
-    list<int> queue;
-
-    // Mark the current node as visit_state and enqueue it
-    // visit_state[s] = visiting;
-    queue.push_back(s);
-
-    while (!queue.empty())
+    void BFS(T s)
     {
-        // Dequeue a vertex from queue and print it
-        s = queue.front();
-        cout << s << " " << flush;
-        queue.pop_front();
+        // Create a queue for BFS
+        list<T> queue;
 
-        // Get all adjacent vertices of the dequeued
-        // vertex s. If a adjacent has not been visit_state,
-        // then mark it visit_state and enqueue it
-        for (auto i = adj[s].begin(); i != adj[s].end(); ++i)
+        // Mark the current node as visit_state and enqueue it
+        visit_state[s] = visited;
+        queue.push_back(s);
+
+        while (!queue.empty())
         {
-            if (visit_state[*i] == unvisited)
+            // Dequeue a vertex from queue and print it
+            s = queue.front();
+            cout << s << " ";
+            queue.pop_front();
+
+            // Get all adjacent vertices of the dequeued
+            // vertex s. If a adjacent has not been visit_state,
+            // then mark it visit_state and enqueue it
+            for (auto i = adj[s].begin(); i != adj[s].end(); ++i)
             {
-                if (*i == e)
+                if (visit_state[*i] == unvisited)
                 {
-                    cout << e << " " << flush;
-                    return true;
-                }
-                else
-                {
-                    // visit_state[*i] = visiting;
+                    visit_state[*i] = visited;
                     queue.push_back(*i);
                 }
             }
-            visit_state[s] = visited;
         }
     }
-    return false;
-}
+
+    bool BFS(T s, T e)
+    {
+        if (s == e)
+            return true;
+
+        // Create a queue for BFS
+        list<T> queue;
+
+        // Mark the current node as visit_state and enqueue it
+        // visit_state[s] = visiting;
+        queue.push_back(s);
+
+        while (!queue.empty())
+        {
+            // Dequeue a vertex from queue and print it
+            s = queue.front();
+            cout << s << " " << flush;
+            queue.pop_front();
+
+            // Get all adjacent vertices of the dequeued
+            // vertex s. If a adjacent has not been visit_state,
+            // then mark it visit_state and enqueue it
+            for (auto i = adj[s].begin(); i != adj[s].end(); ++i)
+            {
+                if (visit_state[*i] == unvisited)
+                {
+                    if (*i == e)
+                    {
+                        cout << e << " " << flush;
+                        return true;
+                    }
+                    else
+                    {
+                        // visit_state[*i] = visiting;
+                        queue.push_back(*i);
+                    }
+                }
+                visit_state[s] = visited;
+            }
+        }
+        return false;
+    }
+};
 
 // Driver code
 int main()
@@ -155,7 +150,7 @@ int main()
      *  5   4 ← 3
      **/
 
-    Graph g(0);
+    Graph<int> g(0);
     g.addEdge(0, 1, 4, 5);
     g.addEdge(1, 3, 4);
     g.addEdge(3, 2, 4);
