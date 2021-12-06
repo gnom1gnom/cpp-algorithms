@@ -16,6 +16,7 @@ using namespace std;
 enum state
 {
     unvisited,
+    visiting, // ten stan jest poto żeby w DFS zorientować się że zatoczyłem cykl z dziecka do rodzica
     visited
 };
 
@@ -23,11 +24,6 @@ template <class T>
 class Graph
 {
 public:
-    Graph(T root)
-    {
-        this->root = root;
-    }
-    T root;
     map<T, state> visit_state;
     map<T, list<T>> adj;
 
@@ -50,130 +46,62 @@ public:
             elem.second = unvisited;
     }
 
-    // DFS traversal of the vertices
-    // reachable from v
-    void DFS(T v)
+    void DFS(T v, list<T> &queue)
     {
         // Mark the current node as visit_state and
         // print it
-        visit_state[v] = visited;
-        cout << v << " ";
-
-        // Recur for all the vertices adjacent
-        // to this vertex
-
-        for (auto i = adj[v].begin(); i != adj[v].end(); ++i)
-            if (visit_state[*i] == unvisited)
-                DFS(*i);
-    }
-
-    void BFS(T s)
-    {
-        // Create a queue for BFS
-        list<T> queue;
-
-        // Mark the current node as visit_state and enqueue it
-        visit_state[s] = visited;
-        queue.push_back(s);
-
-        while (!queue.empty())
+        if (visit_state[v] == visiting)
         {
-            // Dequeue a vertex from queue and print it
-            s = queue.front();
-            cout << s << " ";
-            queue.pop_front();
-
-            // Get all adjacent vertices of the dequeued
-            // vertex s. If a adjacent has not been visit_state,
-            // then mark it visit_state and enqueue it
-            for (auto i = adj[s].begin(); i != adj[s].end(); ++i)
-            {
-                if (visit_state[*i] == unvisited)
-                {
-                    visit_state[*i] = visited;
-                    queue.push_back(*i);
-                }
-            }
+            throw std::invalid_argument("Discovered a cycle in grapth");
         }
-    }
-
-    bool BFS(T s, T e)
-    {
-        if (s == e)
-            return true;
-
-        // Create a queue for BFS
-        list<T> queue;
-
-        // Mark the current node as visit_state and enqueue it
-        // visit_state[s] = visiting;
-        queue.push_back(s);
-
-        while (!queue.empty())
+        if (visit_state[v] == unvisited)
         {
-            // Dequeue a vertex from queue and print it
-            s = queue.front();
-            cout << s << " " << flush;
-            queue.pop_front();
+            visit_state[v] = visiting;
 
-            // Get all adjacent vertices of the dequeued
-            // vertex s. If a adjacent has not been visit_state,
-            // then mark it visit_state and enqueue it
-            for (auto i = adj[s].begin(); i != adj[s].end(); ++i)
-            {
+            // Recur for all the vertices adjacent
+            // to this vertex
+
+            for (auto i = adj[v].begin(); i != adj[v].end(); ++i)
                 if (visit_state[*i] == unvisited)
-                {
-                    if (*i == e)
-                    {
-                        cout << e << " " << flush;
-                        return true;
-                    }
-                    else
-                    {
-                        // visit_state[*i] = visiting;
-                        queue.push_back(*i);
-                    }
-                }
-                visit_state[s] = visited;
-            }
+                    DFS(*i, queue);
+
+            queue.push_front(v);
+            visit_state[v] = visited;
         }
-        return false;
     }
 };
 
 // Driver code
-int main()
+int main(int argc, char const *argv[])
 {
-    /**
-     *  0 → 1 ← 2
-     *  ↓ ↘ ↓ ↘ ↑
-     *  5   4 ← 3
-     **/
 
-    Graph<int> g(0);
-    g.addEdge(0, 1, 4, 5);
-    g.addEdge(1, 3, 4);
-    g.addEdge(3, 2, 4);
-    // cycle
-    g.addEdge(2, 1);
+    // set<char> projects = {'a', 'b', 'c', 'd', 'e', 'f'};
+    // vector<vector<char>> dependencies = {{'a', 'd'}, {'f', 'b'}, {'b', 'd'}, {'f', 'a'}, {'d', 'c'}};
 
-    cout << "Depth First (starting from vertex 0) \n";
-    g.clearVisited();
-    g.DFS(g.root);
-    cout << "\n";
+    // set<char> projects = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
+    // vector<vector<char>> dependencies = {{'d', 'g'}, {'f', 'a'}, {'f', 'c'}, {'f', 'b'}, {'a', 'e'}, {'b', 'e'}, {'c', 'a'}, {'b', 'a'}};
 
-    cout << "Breadth First (starting from vertex 0) \n";
-    g.clearVisited();
-    g.BFS(g.root);
-    cout << "\n";
+    set<char> projects = {'a', 'b', 'c', 'd', 'e', 'f'};
+    vector<vector<char>> dependencies = {{'a', 'b'}, {'a', 'd'}, {'a', 'e'}, {'b', 'd'}, {'d', 'e'}, {'f', 'e'}};
 
-    cout << "Searching path between 2 and 4 \n";
-    g.clearVisited();
-    fmt::print("{}\n", g.BFS(2, 4));
+    Graph<char> graph;
 
-    cout << "Searching path between 5 and 3 \n";
-    g.clearVisited();
-    fmt::print("{}\n", g.BFS(5, 3));
+    for (auto d : dependencies)
+    {
+        graph.addEdge(d[0], d[1]);
+        projects.erase(d[1]);
+    }
+
+    list<char> queue;
+    graph.clearVisited();
+
+    for (char root : projects)
+        graph.DFS(root, queue);
+
+    for (char p : queue)
+        cout << p << " " << flush;
+
+    cout << endl;
 
     return 0;
 }
