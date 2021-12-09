@@ -9,22 +9,27 @@ struct PriorityQueue
 {
 private:
 	// vector to store heap elements
+	// int *A = new int[1000];
+	// int s = 0;
 	vector<int> A;
 
 	// return parent of `A[i]`
 	// don't call this function if `i` is already a root node
-	int PARENT(int i) {
+	int PARENT(int i)
+	{
 		return (i - 1) / 2;
 	}
 
 	// return left child of `A[i]`
-	int LEFT(int i) {
-		return (2*i + 1);
+	int LEFT(int i)
+	{
+		return (2 * i + 1);
 	}
 
 	// return right child of `A[i]`
-	int RIGHT(int i) {
-		return (2*i + 2);
+	int RIGHT(int i)
+	{
+		return (2 * i + 2);
 	}
 
 	// Recursive heapify-down algorithm.
@@ -40,11 +45,13 @@ private:
 
 		// compare `A[i]` with its left and right child
 		// and find the largest value
-		if (left < size() && A[left] > A[i]) {
+		if (left < size() && A[left] > A[i])
+		{
 			largest = left;
 		}
 
-		if (right < size() && A[right] > A[largest]) {
+		if (right < size() && A[right] > A[largest])
+		{
 			largest = right;
 		}
 
@@ -73,19 +80,25 @@ private:
 
 public:
 	// return size of the heap
-	unsigned int size() {
+	unsigned int size()
+	{
+		// return s;
 		return A.size();
 	}
 
 	// Function to check if the heap is empty or not
-	bool empty() {
+	bool empty()
+	{
 		return size() == 0;
 	}
 
 	// insert key into the heap
 	void push(int key)
 	{
+
 		// insert a new element at the end of the vector
+		// A[s] = key;
+		// s += 1;
 		A.push_back(key);
 
 		// get element index and call heapify-up procedure
@@ -96,16 +109,21 @@ public:
 	// Function to remove an element with the highest priority (present at the root)
 	void pop()
 	{
-		try {
+		try
+		{
+
 			// if the heap has no elements, throw an exception
 			if (size() == 0)
 			{
 				throw out_of_range("Vector<X>::at() : "
-						"index is out of range(Heap underflow)");
+								   "index is out of range(Heap underflow)");
 			}
 
 			// replace the root of the heap with the last element
 			// of the vector
+			// s -= 1;
+			// A[0] = A[s];
+			// A[s] = 0;
 			A[0] = A.back();
 			A.pop_back();
 
@@ -113,28 +131,33 @@ public:
 			heapify_down(0);
 		}
 		// catch and print the exception
-		catch (const out_of_range &oor) {
-			cout << endl << oor.what();
+		catch (const out_of_range &oor)
+		{
+			cout << endl
+				 << oor.what();
 		}
 	}
 
 	// Function to return an element with the highest priority (present at the root)
 	int top()
 	{
-		try {
+		try
+		{
 			// if the heap has no elements, throw an exception
 			if (size() == 0)
 			{
 				throw out_of_range("Vector<X>::at() : "
-						"index is out of range(Heap underflow)");
+								   "index is out of range(Heap underflow)");
 			}
 
 			// otherwise, return the top (first) element
-			return A.at(0);		// or return A[0];
+			return A[0]; // or return A[0];
 		}
 		// catch and print the exception
-		catch (const out_of_range &oor) {
-			cout << endl << oor.what();
+		catch (const out_of_range &oor)
+		{
+			cout << endl
+				 << oor.what();
 		}
 	}
 };
@@ -146,9 +169,8 @@ int main()
 
 	// Note: The element's value decides priority
 
-	pq.push(3);
-	pq.push(2);
-	pq.push(15);
+	for (int n = 0; n < 10; ++n)
+		pq.push(n); // generate numbers;
 
 	cout << "Size is " << pq.size() << endl;
 
@@ -162,7 +184,8 @@ int main()
 	pq.push(4);
 	pq.push(45);
 
-	cout << endl << "Size is " << pq.size() << endl;
+	cout << endl
+		 << "Size is " << pq.size() << endl;
 
 	cout << pq.top() << " ";
 	pq.pop();
@@ -176,10 +199,11 @@ int main()
 	cout << pq.top() << " ";
 	pq.pop();
 
-	cout << endl << boolalpha << pq.empty();
+	cout << endl
+		 << boolalpha << pq.empty();
 
-	pq.top();	// top operation on an empty heap
-	pq.pop();	// pop operation on an empty heap
+	pq.top(); // top operation on an empty heap
+	pq.pop(); // pop operation on an empty heap
 
 	return 0;
 }
