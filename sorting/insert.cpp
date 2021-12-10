@@ -23,21 +23,6 @@ int maxComperator(int arg1, int arg2)
     return 0;
 }
 
-void sort(vector<int> &L, int (*comperator)(int, int))
-{
-    size_t n = L.size();
-    int temp;
-
-    list<int> outputList = {L[0]};
-
-    for (size_t i = 1; i < n; i++)
-    {
-        for (list<int>::iterator i = outputList.begin(); i != outputList.end(); i++)
-        {
-        }
-    }
-}
-
 void insertionSort(vector<int> &arr)
 {
     int i, key, j;
@@ -66,10 +51,6 @@ int main()
 {
     vector<int> L = {0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15};
 
-    int (*comperator)(int, int) = maxComperator;
-    int n = L.size();
-
-    // sort(L, comperator);
     insertionSort(L);
 
     for (int i = 0; i < L.size(); i++)
