@@ -1,59 +1,26 @@
-#include <iostream>
-#include <iomanip>
-#include <vector>
+#define FMT_HEADER_ONLY
+
+#include <bits/stdc++.h>
+#include <fmt/core.h>
 
 using namespace std;
 
-void _scal(vector<int> &L, int from, int sr, int to)
+void my_scal(vector<int> &L, int from, int mid, int to)
 {
     // Ze względu na to, że będziemy zapisywać posortowane dane w głównej tablicy L
     // wykonujemy kopię elementów w tablicy L_pom
-    vector<int> L_pom = L;
-
-    // i oraz j to indeks początkowego elementu listy 1 i listy 2.
-    int i = from, j = sr + 1;
-
-    for (int k = from; k <= to; k++)
-    {
-        if (i <= sr) // Sprawdzamy czy 1 podlista ma jakiekolwiek elementy
-        {
-            if (j <= to) // Sprawdzamy czy 2 podlista ma jakiekolwiek elementy
-            {
-                // obie listy są niepuste to porównujemy i przepisujemy mniejszy element
-                L[k] = (L_pom[j] < L_pom[i]) ? L_pom[j++] : L_pom[i++];
-            }
-            else
-            {
-                // L[k] = L_pom[i++]; // Jeśli nie to przepisujemy element z listy 1.
-                while (i <= sr)
-                {
-                    L[k++] = L_pom[i++];
-                }
-            }
-        }
-        else // Jeśli nie to przepisujemy element z listy 2.
-        {
-            // L[k] = L_pom[j++];
-            while (j <= to)
-            {
-                L[k++] = L_pom[j++];
-            }
-        }
-    }
-}
-
-void my_scal(vector<int> &L, int from, int mid, int to)
-{
     vector<int> L_old = L;
 
+    // left oraz right to indeks początkowego elementu listy 1 i listy 2
     int left = from, right = mid + 1;
 
-    for (int m = from; m <= to; m++)
+    for (int m = from; m <= to; m++) // m to pozycja w nowej posortowanie jiście w którą będziemy wstawiać posortowany element
     {
         if (left <= mid) // czy są elementy na pierwszej liście
         {
             if (right <= to) // czy są elementy na drugiej liscie
             {
+                // obie listy są niepuste to porównujemy i przepisujemy mniejszy element
                 if (L_old[left] <= L_old[right])
                     L[m] = L_old[left++];
                 else
@@ -92,12 +59,15 @@ void sortuj(vector<int> &L, int from, int to)
 
 int main()
 {
-    vector<int> L = {0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15};
-    // vector<int> L = {3, 5, 2, 4, 1};
+    // vector<int> L = {0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15};
+    vector<int> L = {3, 5, 2, 4, 1};
     for (int i = 0; i < L.size(); i++)
-        cout << L[i] << " ";
+    {
+        fmt::print("{} ", L[i]);
+        cout << flush;
+    }
 
-    cout << endl;
+    fmt::print("\n");
 
     // L_pom.assign(L.size(), 0);
 
