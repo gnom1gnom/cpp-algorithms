@@ -33,9 +33,10 @@ void sort(vector<int> &L, int (*comperator)(int, int))
             if (comperator(L[i - 1], L[i]) == 1)
             {
                 // większy jest po lewej - zamieniamy ich kolejnościa
-                temp = L[i];
-                L[i] = L[i - 1];
-                L[i - 1] = temp;
+                // temp = L[i];
+                // L[i] = L[i - 1];
+                // L[i - 1] = temp;
+                swap(L[i], L[i - 1]);
             }
         }
         n--;
