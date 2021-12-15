@@ -11,11 +11,9 @@ public:
 
 Node *getPrev(Node *&head, Node *node, Node *next)
 {
-    if (!next->next)
+    if (!next)
     {
-        head = next;
-        next->next = node;
-        node->next = nullptr;
+        head = node;
         return node;
     }
 
@@ -64,8 +62,6 @@ int main()
     input(&head, 2);
     input(&head, 1);
 
-    int k = 58;
-    cout << "Original linked list, to be rotated " << k << " times" << std::endl;
     printlist(head);
     reverse(head);
     cout << "Linked list after rotation" << std::endl;
