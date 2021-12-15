@@ -64,6 +64,6 @@ int main()
 
     printlist(head);
     reverse(head);
-    cout << "Linked list after rotation" << std::endl;
+    cout << "Linked list after reverse" << std::endl;
     printlist(head);
 }
