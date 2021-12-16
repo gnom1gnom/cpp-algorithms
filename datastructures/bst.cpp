@@ -14,31 +14,10 @@ public:
     Node<T> *left = nullptr;
     Node<T> *right = nullptr;
 
-    Node(T value)
-    {
-        this->value = value;
-    }
+    Node(T value) : value{value} {};
 
     void insert(T value)
     {
-
-        /*
-        if (value <= this->value)
-        {
-            if (left)
-                left->insert(value);
-            else
-                left = new Node(value);
-        }
-        else
-        {
-            if (right)
-                right->insert(value);
-            else
-                right = new Node(value);
-        }
-        */
-
         Node **node;
 
         if (value <= this->value)
@@ -190,6 +169,11 @@ public:
 
         return result;
     }
+
+    void print()
+    {
+        getRoot()->print("", "", getRoot());
+    }
 };
 
 void minimalBST(BTS<int> &bts, vector<int> &arr, int left, int right)
@@ -215,7 +199,6 @@ BTS<int> minimalBST(vector<int> arr)
 
 int main(int argc, char const *argv[])
 {
-
     vector<int> val = {5, 4, 8, 6, 2, 3, 9, 12, 15, 16};
     BTS<int> bts;
 
