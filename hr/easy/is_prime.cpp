@@ -2,27 +2,21 @@
 
 using namespace std;
 
-int isPrime(long n)
+bool isPrime(long n)
 {
-    int pierw, pom;
-    pierw = sqrt(n);
+    int pierw = sqrt(n);
 
-    int k = 2; //ustawiamy k na pierwszą liczbę pierwszą
+    // zakres poszukiwania dzielników liczby można ograniczyć z góry przez , ponieważ jest to ostatnia liczba, która może być dzielnikiem liczby a.
+    for (int i = 2; i <= pierw; i++)
+        if (n % i == 0)
+            return false;
 
-    while (k <= pierw)
-    {
-        if (n != k && n % k == 0) //dopóki liczba jest podzielna przez k i nie jest podzielnikiem
-            return k;
-
-        k++;
-    }
-
-    return 1;
+    return true;
 }
 
 int main(int argc, char const *argv[])
 {
-    int n = 37961921;
+    int n = 23;
     cout << n << ": " << isPrime(n) << endl;
     return 0;
 }
