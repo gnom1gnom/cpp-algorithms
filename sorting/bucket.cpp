@@ -9,22 +9,22 @@ template <typename T>
 class BucketSorter
 {
 private:
-    virtual int getBucket(T value, T max, int k) = 0;
+    virtual int getBucket(T value, T max) = 0;
 
 public:
-    vector<T> list; // list ot be sorted
-    int k;          // bucket count
+    vector<T> L; // list ot be sorted
+    int k;       // bucket count
 
-    BucketSorter(vector<T> list, int k)
+    BucketSorter(vector<T> L, int k)
     {
-        this->list = list;
+        this->L = L;
         this->k = k;
     }
 
     void print()
     {
-        for (int i = 0; i < list.size(); i++)
-            fmt::print("{} ", list[i]);
+        for (int i = 0; i < L.size(); i++)
+            fmt::print("{} ", L[i]);
 
         fmt::print("\n");
     }
@@ -40,32 +40,30 @@ public:
      **/
     void bucketSort()
     {
-        vector<vector<T>> bucket;
-        for (int i = 0; i < k; i++)
-            bucket.push_back(vector<T>());
+        vector<vector<T>> buckets(k);
 
-        T min = list[0], max = list[0];
-        for (int i = 0; i < list.size(); i++)
+        T min = L[0], max = L[0];
+        for (int i = 0; i < L.size(); i++)
         {
-            if (list[i] > max)
-                max = list[i];
-            else if (list[i] < min)
-                min = list[i];
+            if (L[i] > max)
+                max = L[i];
+            else if (L[i] < min)
+                min = L[i];
         }
 
         max = (max + min > 0) ? max : -min;
         max++;
 
-        for (int i = 0; i < list.size(); i++)
-            bucket[getBucket(list[i], max, k)].push_back(list[i]);
+        for (auto val : L)
+            buckets[getBucket(val, max)].push_back(val);
 
-        for (int i = 0; i < k; i++)
-            std::sort(bucket[i].begin(), bucket[i].end());
+        for (auto &vals : buckets)
+            sort(vals.begin(), vals.end());
 
-        list.clear();
-        for (int i = 0; i < k; i++)
-            for (int j = 0; j < bucket[i].size(); j++)
-                list.push_back(bucket[i][j]);
+        int i = 0;
+        for (auto vals : buckets)
+            for (auto val : vals)
+                L[i++] = val;
     }
 };
 
@@ -73,9 +71,9 @@ template <typename T>
 class FractionBucketSorter : public BucketSorter<T>
 {
     using BucketSorter<T>::BucketSorter;
-    int getBucket(T value, T max, int k)
+    int getBucket(T value, T max)
     {
-        return value * k;
+        return value * this->k;
     }
 };
 
@@ -83,9 +81,9 @@ template <typename T>
 class PositiveBucketSorter : public BucketSorter<T>
 {
     using BucketSorter<T>::BucketSorter;
-    int getBucket(T value, T max, int k)
+    int getBucket(T value, T max)
     {
-        return (double(value) / double(max) * k);
+        return (double(value) / double(max) * this->k);
     }
 };
 
@@ -93,9 +91,9 @@ template <typename T>
 class NegativeBucketSorter : public BucketSorter<T>
 {
     using BucketSorter<T>::BucketSorter;
-    int getBucket(T value, T max, int k)
+    int getBucket(T value, T max)
     {
-        return ((double(value) / double(max) + 1) / 2) * k;
+        return ((double(value) / double(max) + 1) / 2) * this->k;
     }
 };
 
