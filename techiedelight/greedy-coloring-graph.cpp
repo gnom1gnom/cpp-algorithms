@@ -86,6 +86,35 @@ void colorGraph(Graph const &graph, int n)
     }
 }
 
+// Add more colors for graphs with many more vertices
+unordered_set<string> colors =
+    {
+        "BLUE", "GREEN", "RED", "YELLOW", "ORANGE", "PINK",
+        "WHITE", "PURPLE", "VOILET"};
+
+// Function to assign colors to vertices of a graph
+void my_colorGraph(Graph const &g, int n)
+{
+    unordered_map<int, string> vertexColors;
+
+    for (int v = 0; v < n; v++)
+    {
+        unordered_set<string> free_colors(colors);
+        for (auto c : g.adjList[v])
+        {
+            if (vertexColors.find(c) != vertexColors.end())
+                free_colors.erase(vertexColors[c]);
+        }
+
+        vertexColors[v] = *free_colors.begin();
+    }
+
+    for (int v = 0; v < n; v++)
+    {
+        fmt::print("{}:{} ", v, vertexColors[v]);
+    }
+}
+
 // Greedy coloring of a graph
 int main()
 {
@@ -100,7 +129,7 @@ int main()
     Graph graph(edges, n);
 
     // color graph using the greedy algorithm
-    colorGraph(graph, n);
+    my_colorGraph(graph, n);
 
     return 0;
 }
