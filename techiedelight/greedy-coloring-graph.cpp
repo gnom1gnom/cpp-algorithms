@@ -115,21 +115,77 @@ void my_colorGraph(Graph const &g, int n)
     }
 }
 
+// Function to check if it is safe to assign color `c` to vertex `v`
+bool isSafe(Graph const &graph, vector<int> clr, int v, int c)
+{
+    // check the color of every adjacent vertex of `v`
+    for (int u : graph.adjList[v])
+    {
+        if (clr[u] == c)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void kColorable(Graph const &graph, vector<int> &clr, int k, int v, int n)
+{
+    // if all colors are assigned, print the solution
+    if (v == n)
+    {
+        for (int v = 0; v < n; v++)
+        {
+            cout << setw(8) << left << color[clr[v]];
+        }
+        cout << endl;
+
+        return;
+    }
+
+    // try all possible combinations of available colors
+    for (int c = 1; c <= k; c++)
+    {
+        // if it is safe to assign color `c` to vertex `v`
+        if (isSafe(graph, clr, v, c))
+        {
+            // assign color `c` to vertex `v`
+            clr[v] = c;
+
+            // recur for the next vertex
+            kColorable(graph, clr, k, v + 1, n);
+
+            // backtrack
+            // bez tego kolejne iteracje nie zaczynałyby z czystym arrayem
+            clr[v] = 0;
+        }
+    }
+}
+
 // Greedy coloring of a graph
 int main()
 {
     // vector of graph edges as per the above diagram
-    vector<Edge> edges = {
-        {0, 1}, {0, 4}, {0, 5}, {4, 5}, {1, 4}, {1, 3}, {2, 3}, {2, 4}};
+    // vector<Edge> edges = {{0, 1}, {0, 4}, {0, 5}, {4, 5}, {1, 4}, {1, 3}, {2, 3}, {2, 4}};
+    vector<Edge> edges = {{0, 1}, {0, 2}, {1, 2}};
 
     // total number of nodes in the graph (labelled from 0 to 5)
-    int n = 6;
+    int n = 3;
 
     // build a graph from the given edges
     Graph graph(edges, n);
 
     // color graph using the greedy algorithm
-    my_colorGraph(graph, n);
+    colorGraph(graph, n);
+    cout << endl;
+
+    int k = 3;
+
+    vector<int> color(n, 0);
+
+    // print all k–colorable configurations of the graph
+    kColorable(graph, color, k, 0, n);
 
     return 0;
 }
