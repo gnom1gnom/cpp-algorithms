@@ -39,6 +39,7 @@ public:
     // Find the root of the set in which element `k` belongs
     int find(int k)
     {
+        // dopuki nie znaleźliśmy reprezentanta setu
         if (parent[k] != k)
         {
             // skracamy ścieżkę, żeby na przyszłość nie trawersować wszystkich parentów
